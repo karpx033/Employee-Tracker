@@ -1,12 +1,20 @@
-const fs = require('fs');
 const inquirer = require('inquirer');
 const Choices = require('inquirer/lib/objects/choices');
-// const Intern = require("./lib/Intern");
-// const Engineer = require('./lib/Engineer');
-// const employee = require('./lib/Employee.js');
-// const Manager = require('./lib/Manager.js');
-// const genTeam = require('./src/page-template.js');
-// const styles = require('./dist/style.css');
+
+const express = require('express');
+const sequelize = require('./config/connection');
+
+const models = require('./models');
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log('Now listening'));
+});
 
 const team = [];
 
