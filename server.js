@@ -1,38 +1,71 @@
 const inquirer = require('inquirer');
 const Choices = require('inquirer/lib/objects/choices');
-
+const db = require('./db/connection.js');
 const express = require('express');
-const sequelize = require('./config/connection');
-
-const models = require('./models');
-
+const mysql = require('mysql2');
+const PORT = process.env.PORT || 3002;
 const app = express();
-const PORT = process.env.PORT || 3001;
 
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+// Hardcoded query: DELETE FROM course_names WHERE id = 3;
+
+db.query(`DELETE FROM course_names WHERE id = ?`, 3, (err, result) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(result);
 });
 
- function loadPrompts() {
-    inquirer
-   .prompt([
-   {
-    type: "list",
-    name: "choice",
-    message: "Make a selection",
-    choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
-    default: 'View all roles'
-   }
-]).then(answers => {
-    console.info('Answer:', answers.choice);
-    return answers.choice;
-  });;
-}
+// Query database
+db.query('SELECT * FROM course_names', function (err, results) {
+  console.log(results);
+});
 
-loadPrompts();
+// Default response for any other request (Not Found)
+app.use((req, res) => {
+  res.status(404).end();
+});
+
+
+
+
+
+async function loadLizard () {
+    await inquirer
+     .prompt([
+       {
+         type: 'list',
+         name: 'reptile',
+         message: 'Which is better?',
+         choices: ['alligator', 'crocodile'],
+       },
+     ])
+     .then(answers => {
+       console.info('Answer:', answers.reptile);
+       return answers.reptile;
+     });
+   }
+   
+   loadLizard();
+// async function loadPrompts() {
+//    await inquirer
+//    .prompt([
+//    {
+//     type: "list",
+//     name: "choice",
+//     message: "Make a selection",
+//     choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
+//     default: 'View all roles'
+//    }
+// ]).then(answers => {
+//     console.info('Answer:', answers.choice);
+//     return answers.choice;
+//   });;
+// }
+
+// loadPrompts();
 
 // let launch = async function () {
 //     return await loadPrompts();
@@ -77,4 +110,8 @@ loadPrompts();
 
 // function viewRoles (answers) {
 //     console.log(answers);
-//     console.log("working");
+// //     console.log("working");
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });

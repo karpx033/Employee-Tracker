@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Department, Roles, Employees } = require('../../models');
 
+
 router.get('/', async (req, res) => {
   try {
     const departmentData = await Department.findAll({
