@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const db = require('./config/connection');
 
  function loadPrompts() {
      inquirer
@@ -68,12 +69,48 @@ function viewEmployees () {
 }
 
 function addDepartment () {
-
-}
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "department",
+            message: "What is the name of the department?",
+           }
+    ]).then((answers) => {
+        var dname = answers.department;
+        db.query(`INSERT INTO department (name)
+        VALUES ("${dname}");`, function (err, results){
+            console.log(results);
+        })
+    })
+};
 
 function addRole () {
-
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "jobtitle",
+            message: "What is the job title of the role?",
+    },
+    {
+            type: "input",
+            name: "salary",
+            message: "What is the salary of the role?",
+    },
+    {
+        type: "input",
+        name: "department",
+        message: "What is the of the role's department?",
 }
+]).then((answers) => {
+    var jt = answers.jobtitle;
+    var ss = answers.salary;
+    var dd = answers.department;
+    db.query(`INSERT INTO roles (jobtitle, salary, department)
+    VALUES ("${jt}", ${ss}, ${dd}),`, function (err, results){
+        console.log(results);
+    })
+})
+};
 
 function addEmployee () {
 
