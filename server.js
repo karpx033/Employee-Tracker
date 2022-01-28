@@ -16,38 +16,31 @@ sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
 
-
-
-//   .then((answers) => { 
-//     console.log(answers);;
-// });
-
-async function loadPrompts() {
-    const {choice} = await inquirer.prompt([
+function loadPrompts() {
+   inquirer
+   .prompt([
    {
     type: "list",
-    name: "name",
+    name: "choice",
     message: "Make a selection",
-    choices: ['View all roles',
-    'View all employees', 
-    'Add a department',
-    'Add a role',
-    'Add an employee',
-    'Update an employee role'],
-    default: 'View all roles'
-   },
-])};
-// switch (choice)  {
-//     case "View all roles":
-//         return viewEmployees();
-//     default: console.log("nope");
-//     }
-// };
+    choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role']
+    // default: 'View all roles'
+   }
+]).then(answers => {
+    console.info('Answer:', answers.choice);
+  });;
+}
 
-function viewEmployees() {
-    console.log("working");
-  }
+let launch = async function () {
+    return await loadPrompts();
+};
 
+  launch().then((answers) => { 
+      console.log("Hello");
+        console.log(answers);
+    });
+
+ 
 //        console.log(answers);
 //         if (answers.name==="View all roles") {
 //            console.log("works here");
@@ -82,12 +75,3 @@ function viewEmployees() {
 // function viewRoles (answers) {
 //     console.log(answers);
 //     console.log("working");
-// }
-
-let launch = async function () {
-    await loadPrompts();
-    console.log("finished");
-  };
-  launch().then((answers) => { 
-        console.log(answers);;
-    });;
