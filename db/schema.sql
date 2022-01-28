@@ -21,11 +21,11 @@ CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   firstname VARCHAR(30) NOT NULL,
   lastname VARCHAR(30) NOT NULL,
-  jobtitle VARCHAR(30) NOT NULL,
+  jobtitle INT NOT NULL,
   department INT,
   salary INT NOT NULL,
   managers VARCHAR(30),
   FOREIGN KEY (department) REFERENCES department(id),
-  FOREIGN KEY (jobtitle) REFERENCES roles(id),
-  FOREIGN KEY (salary) REFERENCES roles(id)
+  FOREIGN KEY (salary) REFERENCES roles(id),
+  FOREIGN KEY (jobtitle) REFERENCES roles(id)
 );

@@ -49,13 +49,20 @@ function viewDepartments () {
 }
 
 function viewRoles () {
-    db.query('SELECT * FROM roles', function (err, results) {
+    db.query(`SELECT roles.jobtitle AS jobtitle, roles.salary AS salary, department.name AS department
+        FROM roles
+        JOIN department ON roles.department = department.id;`, 
+        function (err, results) {
         console.log(results);
       });
 }
 
 function viewEmployees () {
-    db.query('SELECT * FROM employees', function (err, results) {
+    db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
+    FROM employees e
+    JOIN department ON e.department = department.id
+    JOIN roles r ON e.jobtitle = r.id
+    JOIN roles  ON e.salary = roles.id;`, function (err, results) {
         console.log(results);
       });
 }
