@@ -2,6 +2,7 @@ const Department = require('./Department');
 const Employees = require('./Employees');
 const Roles = require('./Roles');
 
+
 Department.hasMany(Roles, {
   foreignKey: 'department_id',
   onDelete: 'CASCADE',

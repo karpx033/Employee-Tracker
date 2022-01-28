@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
+
 class Roles extends Model {}
 
 Roles.init(
@@ -12,7 +13,7 @@ Roles.init(
       autoIncrement: true,
     },
     title: {
-      type: Sequelize.STRING(30),
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
     salary: {

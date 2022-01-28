@@ -16,8 +16,14 @@ sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
 
-function init() {
-    inquirer.prompt([
+
+
+//   .then((answers) => { 
+//     console.log(answers);;
+// });
+
+async function loadPrompts() {
+    const {choice} = await inquirer.prompt([
    {
     type: "list",
     name: "name",
@@ -30,26 +36,58 @@ function init() {
     'Update an employee role'],
     default: 'View all roles'
    },
-])
-   .then((answers) => {
-       console.log(answers);
-        if (answers.name==="View all roles") {
-            viewRoles(answers);
-        } if (answers.name==="View all employees") {
-            viewEmployees(answers);
-        } if (answers.name==="Add a department") {
-            addDepartment(answers);
-        } if (answers.name==="Add a role") {
-            addRole(answers);
-        } if (answers.name==="Add an employee") {
-            addEmployee(answers);
-        } if (answers.name==="Update an employee role") {
-            updateEmployee(answers);
-        }
-    })
-    .catch(err => {
-        console.log(err);
-    })
-};
+])};
+// switch (choice)  {
+//     case "View all roles":
+//         return viewEmployees();
+//     default: console.log("nope");
+//     }
+// };
 
-init();
+function viewEmployees() {
+    console.log("working");
+  }
+
+//        console.log(answers);
+//         if (answers.name==="View all roles") {
+//            console.log("works here");
+//             viewRoles(answers);
+//         } if (answers.name==="View all employees") {
+//             // viewEmployees(answers);
+//             viewRoles(answers);
+
+//         } if (answers.name==="Add a department") {
+//             // addDepartment(answers);
+//             viewRoles(answers);
+
+//         } if (answers.name==="Add a role") {
+//             // addRole(answers);
+//             viewRoles(answers);
+
+//         } if (answers.name==="Add an employee") {
+//             // addEmployee(answers);
+//             viewRoles(answers);
+
+//         } if (answers.name==="Update an employee role") {
+//             // updateEmployee(answers);
+//             viewRoles(answers);
+
+//         }
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
+// };
+
+// function viewRoles (answers) {
+//     console.log(answers);
+//     console.log("working");
+// }
+
+let launch = async function () {
+    await loadPrompts();
+    console.log("finished");
+  };
+  launch().then((answers) => { 
+        console.log(answers);;
+    });;
