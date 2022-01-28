@@ -1,19 +1,64 @@
 const inquirer = require('inquirer');
 
-async function loadLizard () {
- await inquirer
-  .prompt([
+ function loadPrompts() {
+     inquirer
+    .prompt([
     {
-      type: 'list',
-      name: 'reptile',
-      message: 'Which is better?',
-      choices: ['alligator', 'crocodile'],
-    },
-  ])
-  .then(answers => {
-    console.info('Answer:', answers.reptile);
-    return answers.reptile;
-  });
+     type: "list",
+     name: "choice",
+     message: "Make a selection",
+     choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
+     default: 'View all roles'
+    }
+ ]).then(answers => {
+     console.info('Answer:', answers.choice);
+     switch (answers.choice) {
+        case "View all roles":
+            viewRoles();
+            break;
+        case "View all employees":
+            viewEmployees();
+            break;
+        case "Add a department":
+            addDepartment();
+            break;
+        case "Add a role":
+            addRole();
+            break;
+        case "Add an employee":
+            addEmployee();
+            break;
+        case "Update an employee role":
+            updateEmployee();
+            break;
+        default:
+            console.log(err);
+        }
+    });
+};
+
+loadPrompts();
+
+function viewRoles () {
+
 }
 
-loadLizard();
+function viewEmployees () {
+
+}
+
+function addDepartment () {
+
+}
+
+function addRole () {
+
+}
+
+function addEmployee () {
+
+}
+
+function updateEmployee () {
+
+}
