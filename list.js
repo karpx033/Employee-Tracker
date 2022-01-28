@@ -7,12 +7,15 @@ const inquirer = require('inquirer');
      type: "list",
      name: "choice",
      message: "Make a selection",
-     choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
+     choices: ['View all departments', 'View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
      default: 'View all roles'
     }
  ]).then(answers => {
      console.info('Answer:', answers.choice);
      switch (answers.choice) {
+        case "View all departments":
+            viewDepartments();
+            break;
         case "View all roles":
             viewRoles();
             break;
@@ -39,12 +42,22 @@ const inquirer = require('inquirer');
 
 loadPrompts();
 
-function viewRoles () {
+function viewDepartments () {
+    db.query('SELECT * FROM department', function (err, results) {
+        console.log(results);
+      });
+}
 
+function viewRoles () {
+    db.query('SELECT * FROM roles', function (err, results) {
+        console.log(results);
+      });
 }
 
 function viewEmployees () {
-
+    db.query('SELECT * FROM employees', function (err, results) {
+        console.log(results);
+      });
 }
 
 function addDepartment () {
@@ -62,3 +75,5 @@ function addEmployee () {
 function updateEmployee () {
 
 }
+
+module.exports = {viewRoles, viewEmployees, addDepartment, addRole, addEmployee, updateEmployee};
