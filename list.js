@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 
-function loadLizard () {
-inquirer
+async function loadLizard () {
+ await inquirer
   .prompt([
     {
       type: 'list',
@@ -12,5 +12,8 @@ inquirer
   ])
   .then(answers => {
     console.info('Answer:', answers.reptile);
+    return answers.reptile;
   });
 }
+
+loadLizard();

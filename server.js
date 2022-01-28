@@ -16,29 +16,32 @@ sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
 
-function loadPrompts() {
-   inquirer
+ function loadPrompts() {
+    inquirer
    .prompt([
    {
     type: "list",
     name: "choice",
     message: "Make a selection",
-    choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role']
-    // default: 'View all roles'
+    choices: ['View all roles','View all employees', 'Add a department','Add a role','Add an employee','Update an employee role'],
+    default: 'View all roles'
    }
 ]).then(answers => {
     console.info('Answer:', answers.choice);
+    return answers.choice;
   });;
 }
 
-let launch = async function () {
-    return await loadPrompts();
-};
+loadPrompts();
 
-  launch().then((answers) => { 
-      console.log("Hello");
-        console.log(answers);
-    });
+// let launch = async function () {
+//     return await loadPrompts();
+// };
+
+//   launch().then((answers) => { 
+//       console.log("Hello");
+//         console.log(answers);
+//     });
 
  
 //        console.log(answers);
