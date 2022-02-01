@@ -84,7 +84,6 @@ function addDepartment () {
         var dname = answers.department;
         db.query(`INSERT INTO department (name)
         VALUES ("${dname}");`, function (err, results){
-            viewDepartments();
             loadPrompts();
         })
     })
@@ -124,7 +123,6 @@ function addRole () {
     indexdd +=1;
     db.query(`INSERT INTO roles (jobtitle, salary, department)
     VALUES ("${jt}", ${ss}, ${indexdd})`, function (err, results){
-        viewRoles();
         loadPrompts();
     })
 })
@@ -171,7 +169,6 @@ function addEmployee () {
  
     db.query(`INSERT INTO employees (firstname, lastname, jobtitle, department, salary, managers)
     VALUES ("${fn}", "${ln}",  ${indexrole}, ${indexrole}, ${indexrole}, "${mng}")`, function (err, results){
-        viewEmployees();
         loadPrompts();
     })
 })
@@ -213,15 +210,11 @@ function updateEmployee () {
                         var role = answers.role
                         var indexval = jobsarr.indexOf(role);
                         indexval +=1;
-                        console.log(indexval);
                         db.query(`UPDATE employees
-                        SET jobtitle = "${indexval}"
-                        WHERE firstname = '${emp}';`, function (err, results) {
+                        SET jobtitle = ${indexval}
+                        WHERE firstname = "${emp}";`, function (err, results) {
                         })
-                        // db.query( `SELECT * from employees;`, function (err, empresutls){
-                        //     console.table(empresutls);
-                        //     loadPrompts();
-                        // })
+                        loadPrompts();
                     });
     }) 
 };
