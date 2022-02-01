@@ -48,7 +48,7 @@ loadPrompts();
 function viewDepartments () {
     db.query('SELECT * FROM department', function (err, results) {
         console.table(results);
-        // loadPrompts();
+        loadPrompts();
       });
 }
 
@@ -58,6 +58,7 @@ function viewRoles () {
         JOIN department ON roles.department = department.id;`, 
         function (err, results) {
         console.table(results);
+        loadPrompts();
       });
 }
 
@@ -68,6 +69,7 @@ function viewEmployees () {
     JOIN roles r ON e.jobtitle = r.id
     JOIN roles  ON e.salary = roles.id;`, function (err, results) {
         console.table(results);
+        loadPrompts();
       });
 }
 
@@ -83,6 +85,7 @@ function addDepartment () {
         db.query(`INSERT INTO department (name)
         VALUES ("${dname}");`, function (err, results){
             console.table(results);
+            loadPrompts();
         })
     })
 };
@@ -111,6 +114,7 @@ function addRole () {
     db.query(`INSERT INTO roles (jobtitle, salary, department)
     VALUES ("${jt}", ${ss}, ${dd}),`, function (err, results){
         console.table(results);
+        loadPrompts();
     })
 })
 };
@@ -145,6 +149,7 @@ function addEmployee () {
     db.query(`INSERT INTO employees (firstname, lastname, jobtitle, department, salary, managers)
     VALUES ("${fn}", "${ln}",  ${rl}, ${rl}, ${rl}, "${mng}),`, function (err, results){
         console.table(results);
+        loadPrompts();
     })
 })
 }
@@ -179,6 +184,7 @@ function updateEmployee () {
                         })
                         db.query(`SELECT * FROM employees`, function (err, empresutls){
                             console.table(empresutls);
+                            loadPrompts();
                         })
                     });
     }) 
