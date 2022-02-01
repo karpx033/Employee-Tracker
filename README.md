@@ -16,7 +16,7 @@
 
 ## Screenshot
 
-[Screenshot of Employee Tracker] (/Screenshot.jpg)
+![Screenshot of the landing page](./Screenshot.jpg)
 
  ## Description
 
