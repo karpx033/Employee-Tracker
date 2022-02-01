@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
 const cTable = require('console.table');
+const { load } = require('dotenv');
 
  function loadPrompts() {
      inquirer
@@ -47,6 +48,7 @@ loadPrompts();
 function viewDepartments () {
     db.query('SELECT * FROM department', function (err, results) {
         console.table(results);
+        // loadPrompts();
       });
 }
 
