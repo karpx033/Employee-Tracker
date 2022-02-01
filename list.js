@@ -120,6 +120,22 @@ function addRole () {
 };
 
 function addEmployee () {
+    var jobsarr = [];
+    // var dep = [];
+    db.query(`SELECT roles.jobtitle from roles;`, function (err, results) {
+        
+        var jobs = results;
+        for (let i=0; i<jobs.length; i++) {
+            jobsarr.push(jobs[i].jobtitle)
+        }
+    })
+    // db.query(`SELECT department.name from department;`, function (err, results) {
+        
+    //     var deps = results;
+    //     for (let i=0; i<deps.length; i++) {
+    //         dep.push(deps[i].name)
+    //     }
+    // })
     inquirer.prompt([
         {
             type: "input",
@@ -132,9 +148,10 @@ function addEmployee () {
             message: "What is the last name of the employee?",
     },
     {
-        type: "input",
+        type: "list",
         name: "rl",
-        message: "What is the id of the employee's role?",
+        message: "What is the employee's role?",
+        choices: jobsarr
     },
     {
         type: "input",
@@ -145,16 +162,27 @@ function addEmployee () {
     var fn = answers.fn;
     var ln = answers.ln;
     var rl = answers.rl;
+    var indexrole = jobsarr.indexOf(rl)
+    indexrole +=1;
+    console.log(indexrole);
     var mng =answers.mng;
     db.query(`INSERT INTO employees (firstname, lastname, jobtitle, department, salary, managers)
-    VALUES ("${fn}", "${ln}",  ${rl}, ${rl}, ${rl}, "${mng}),`, function (err, results){
-        console.table(results);
-        loadPrompts();
+    VALUES ("${fn}", "${ln}",  ${indexrole}, ${indexrole}, ${indexrole}, "${mng}),`, function (err, results){
+    })
+    db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
+    FROM employees e
+    JOIN department ON e.department = department.id
+    JOIN roles r ON e.jobtitle = r.id
+    JOIN roles  ON e.salary = roles.id;`, function (err, empresutls){
+    console.table(empresutls);
+    loadPrompts();
     })
 })
 }
-var onlynames =[];
+
 function updateEmployee () {
+    var onlynames =[];
+    var jobsarr = [];
     db.query(`SELECT employees.firstname from employees;`, 
         function (err, results) {
             var names = results;
@@ -162,6 +190,13 @@ function updateEmployee () {
             for (let i=0; i<names.length; i++) {
                 onlynames.push(names[i].firstname)
             }
+    db.query(`SELECT roles.jobtitle from roles;`, function (err, results) {
+        
+        var jobs = results;
+        for (let i=0; i<jobs.length; i++) {
+            jobsarr.push(jobs[i].jobtitle)
+        }
+    })
             inquirer.prompt([
                                 {
                                     type: "list",
@@ -170,24 +205,31 @@ function updateEmployee () {
                                     choices: onlynames,
                             },
                             {
-                                type: "input",
+                                type: "list",
                                 name: "role",
-                                message: "What is their new role ID?"
+                                message: "What is their new role?",
+                                choices: jobsarr
                             }
                         ])
                         .then((answers) => {
                         var emp =answers.emp
                         var role = answers.role
+                        var indexval = jobsarr.indexOf(role);
+                        indexval +=1;
+                        console.log(indexval);
                         db.query(`UPDATE employees
-                        SET jobtitle = "${role}"
+                        SET jobtitle = "${indexval}"
                         WHERE firstname = '${emp}';`, function (err, results) {
                         })
-                        db.query(`SELECT * FROM employees`, function (err, empresutls){
+                        db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
+                        FROM employees e
+                        JOIN department ON e.department = department.id
+                        JOIN roles r ON e.jobtitle = r.id
+                        JOIN roles  ON e.salary = roles.id;`, function (err, empresutls){
                             console.table(empresutls);
                             loadPrompts();
                         })
                     });
     }) 
 };
-
 module.exports = {viewRoles, viewEmployees, addDepartment, addRole, addEmployee, updateEmployee};
