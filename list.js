@@ -84,13 +84,21 @@ function addDepartment () {
         var dname = answers.department;
         db.query(`INSERT INTO department (name)
         VALUES ("${dname}");`, function (err, results){
-            console.table(results);
+            viewDepartments();
             loadPrompts();
         })
     })
 };
 
 function addRole () {
+    var deparr =[];
+    db.query(`SELECT department.name from department;`, function (err, results) {
+        
+        var departments = results;
+        for (let i=0; i<departments.length; i++) {
+            deparr.push(departments[i].name)
+        }
+    })
     inquirer.prompt([
         {
             type: "input",
@@ -103,17 +111,20 @@ function addRole () {
             message: "What is the salary of the role?",
     },
     {
-        type: "input",
+        type: "list",
         name: "department",
-        message: "What is the of the role's department?",
+        message: "Which is the of the role's department?",
+        choices: deparr
 }
 ]).then((answers) => {
     var jt = answers.jobtitle;
     var ss = answers.salary;
     var dd = answers.department;
+    var indexdd = deparr.indexOf(dd)
+    indexdd +=1;
     db.query(`INSERT INTO roles (jobtitle, salary, department)
-    VALUES ("${jt}", ${ss}, ${dd}),`, function (err, results){
-        console.table(results);
+    VALUES ("${jt}", ${ss}, ${indexdd})`, function (err, results){
+        viewRoles();
         loadPrompts();
     })
 })
@@ -121,7 +132,6 @@ function addRole () {
 
 function addEmployee () {
     var jobsarr = [];
-    // var dep = [];
     db.query(`SELECT roles.jobtitle from roles;`, function (err, results) {
         
         var jobs = results;
@@ -129,13 +139,6 @@ function addEmployee () {
             jobsarr.push(jobs[i].jobtitle)
         }
     })
-    // db.query(`SELECT department.name from department;`, function (err, results) {
-        
-    //     var deps = results;
-    //     for (let i=0; i<deps.length; i++) {
-    //         dep.push(deps[i].name)
-    //     }
-    // })
     inquirer.prompt([
         {
             type: "input",
@@ -164,18 +167,12 @@ function addEmployee () {
     var rl = answers.rl;
     var indexrole = jobsarr.indexOf(rl)
     indexrole +=1;
-    console.log(indexrole);
     var mng =answers.mng;
+ 
     db.query(`INSERT INTO employees (firstname, lastname, jobtitle, department, salary, managers)
-    VALUES ("${fn}", "${ln}",  ${indexrole}, ${indexrole}, ${indexrole}, "${mng}),`, function (err, results){
-    })
-    db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
-    FROM employees e
-    JOIN department ON e.department = department.id
-    JOIN roles r ON e.jobtitle = r.id
-    JOIN roles  ON e.salary = roles.id;`, function (err, empresutls){
-    console.table(empresutls);
-    loadPrompts();
+    VALUES ("${fn}", "${ln}",  ${indexrole}, ${indexrole}, ${indexrole}, "${mng}")`, function (err, results){
+        viewEmployees();
+        loadPrompts();
     })
 })
 }
@@ -221,14 +218,10 @@ function updateEmployee () {
                         SET jobtitle = "${indexval}"
                         WHERE firstname = '${emp}';`, function (err, results) {
                         })
-                        db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
-                        FROM employees e
-                        JOIN department ON e.department = department.id
-                        JOIN roles r ON e.jobtitle = r.id
-                        JOIN roles  ON e.salary = roles.id;`, function (err, empresutls){
-                            console.table(empresutls);
-                            loadPrompts();
-                        })
+                        // db.query( `SELECT * from employees;`, function (err, empresutls){
+                        //     console.table(empresutls);
+                        //     loadPrompts();
+                        // })
                     });
     }) 
 };
