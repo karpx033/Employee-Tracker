@@ -165,46 +165,21 @@ function updateEmployee () {
                             {
                                 type: "input",
                                 name: "role",
-                                message: "What is their new role?"
+                                message: "What is their new role ID?"
                             }
                         ])
                         .then((answers) => {
                         var emp =answers.emp
                         var role = answers.role
                         db.query(`UPDATE employees
-                        SET roles = "${role}"
-                        WHERE firstname = ${emp};`, function (err, results){
-                            console.log("working?");
-                            console.table("bueller?");
-                            console.table(results);
+                        SET jobtitle = "${role}"
+                        WHERE firstname = '${emp}';`, function (err, results) {
+                        })
+                        db.query(`SELECT * FROM employees`, function (err, empresutls){
+                            console.table(empresutls);
                         })
                     });
     }) 
 };
-//     waitprompt(); 
-//             inquirer.prompt([
-//                 {
-//                     type: "list",
-//                     name: "emp",
-//                     message: "What is the first name of the employee?",
-//                     choices: onlynames,
-//             },
-//             {
-//                 type: "input",
-//                 name: "role",
-//                 message: "What is their new role?"
-//             }
-//         ])
-//         .then((answers) => {
-//         var emp =answers.emp
-//         var role = answers.role
-//         db.query(`UPDATE employees
-//         SET role = "${role}"
-//         WHERE firstname = ${emp};`, function (err, results){
-//             console.table(results);
-//         })
-//     });
-//     };
-// }
 
 module.exports = {viewRoles, viewEmployees, addDepartment, addRole, addEmployee, updateEmployee};
