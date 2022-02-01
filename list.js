@@ -155,63 +155,56 @@ function updateEmployee () {
             for (let i=0; i<names.length; i++) {
                 onlynames.push(names[i].firstname)
             }
-            console.log(onlynames);
-            console.log("onlynames " + onlynames);
-        async function waitprompt() {
-        return await onlynames;
-    };
-            
-        }) 
-    waitprompt(); 
-    //         inquirer.prompt([
-    //             {
-    //                 type: "list",
-    //                 name: "emp",
-    //                 message: "What is the first name of the employee?",
-    //                 choices: onlynames,
-    //         },
-    //         {
-    //             type: "input",
-    //             name: "role",
-    //             message: "What is their new role?"
-    //         }
-    //     ])
-    //     .then((answers) => {
-    //     var emp =answers.emp
-    //     var role = answers.role
-    //     db.query(`UPDATE employees
-    //     SET role = "${role}"
-    //     WHERE firstname = ${emp};`, function (err, results){
-    //         console.table(results);
-    //     })
-    // });
-    // };
-}
-
-function newprompt () {
-    console.log(onlynames);
-//     inquirer.prompt([
-//         {
-//             type: "list",
-//             name: "emp",
-//             message: "What is the first name of the employee?",
-//             choices: onlynames,
-//     },
-//     {
-//         type: "input",
-//         name: "role",
-//         message: "What is their new role?"
-//     }
-// ])
-// .then((answers) => {
-// var emp =answers.emp
-// var role = answers.role
-// db.query(`UPDATE employees
-// SET role = "${role}"
-// WHERE firstname = ${emp};`, function (err, results){
-//     console.table(results);
-// })
-// });
+            inquirer.prompt([
+                                {
+                                    type: "list",
+                                    name: "emp",
+                                    message: "What is the first name of the employee?",
+                                    choices: onlynames,
+                            },
+                            {
+                                type: "input",
+                                name: "role",
+                                message: "What is their new role?"
+                            }
+                        ])
+                        .then((answers) => {
+                        var emp =answers.emp
+                        var role = answers.role
+                        db.query(`UPDATE employees
+                        SET roles = "${role}"
+                        WHERE firstname = ${emp};`, function (err, results){
+                            console.log("working?");
+                            console.table("bueller?");
+                            console.table(results);
+                        })
+                    });
+    }) 
 };
+//     waitprompt(); 
+//             inquirer.prompt([
+//                 {
+//                     type: "list",
+//                     name: "emp",
+//                     message: "What is the first name of the employee?",
+//                     choices: onlynames,
+//             },
+//             {
+//                 type: "input",
+//                 name: "role",
+//                 message: "What is their new role?"
+//             }
+//         ])
+//         .then((answers) => {
+//         var emp =answers.emp
+//         var role = answers.role
+//         db.query(`UPDATE employees
+//         SET role = "${role}"
+//         WHERE firstname = ${emp};`, function (err, results){
+//             console.table(results);
+//         })
+//     });
+//     };
+// }
 
 module.exports = {viewRoles, viewEmployees, addDepartment, addRole, addEmployee, updateEmployee};
