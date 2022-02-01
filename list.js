@@ -63,11 +63,9 @@ function viewRoles () {
 }
 
 function viewEmployees () {
-    db.query( `SELECT e.firstname AS firstname, e.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, e.managers AS managers
-    FROM employees e
-    JOIN department ON e.department = department.id
-    JOIN roles r ON e.jobtitle = r.id
-    JOIN roles  ON e.salary = roles.id;`, function (err, results) {
+    db.query( `SELECT employees.firstname AS firstname, employees.lastname AS lastname, roles.jobtitle AS jobtitle, department.name AS department, roles.salary AS salary, employees.managers AS managers
+    FROM employees , roles, department
+    WHERE employees.jobtitle=roles.id AND employees.department = department.id;`, function (err, results) {
         console.table(results);
         loadPrompts();
       });
@@ -211,7 +209,7 @@ function updateEmployee () {
                         var indexval = jobsarr.indexOf(role);
                         indexval +=1;
                         db.query(`UPDATE employees
-                        SET jobtitle = ${indexval}
+                        SET jobtitle = ${indexval}, department = ${indexval}, salary = ${indexval}
                         WHERE firstname = "${emp}";`, function (err, results) {
                         })
                         loadPrompts();
